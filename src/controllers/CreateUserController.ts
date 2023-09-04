@@ -5,9 +5,8 @@ import { prismaClient } from '../infra/database/prismaClient'
 class CreateUserController {
     async handle(request: Request, response: Response) {
         const { name, email, password } = request.body
-        const saltRounds = 10 // Número de rounds para a criptografia
+        const saltRounds = 14
 
-        // Criptografar a senha
         const hashedPassword = await bcrypt.hash(password, saltRounds)
 
         try {
@@ -27,7 +26,7 @@ class CreateUserController {
                 data: {
                     name,
                     email,
-                    password: hashedPassword // Use a senha criptografada
+                    password: hashedPassword
                 }
             })
 
