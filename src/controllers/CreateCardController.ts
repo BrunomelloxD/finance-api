@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { prismaClient } from '../database/prismaClient'
+import { prismaClient } from '../infra/database/prismaClient'
 
 class CreateCardController {
     async handle(request: Request, response: Response) {
