@@ -13,6 +13,7 @@ class CreateCardController {
                 }
             }
         })
+        return response.status(201).json(card)
     }
 }
 

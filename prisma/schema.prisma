@@ -10,9 +10,9 @@ datasource db {
 model Cards {
   id         String   @id @unique @default(uuid())
   name       String
-  final_code String   @unique
+  final_code Float    @unique
   created_at DateTime @default(now())
-  userId     String   @unique
+  userId     String
   User       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("cards")
@@ -32,7 +32,7 @@ model User {
   name       String   @db.VarChar(255)
   email      String   @unique @db.VarChar(255)
   password   String
-  product    Cards[]
+  cards      Cards[]
   profile    Profile?
   created_at DateTime @default(now())
 

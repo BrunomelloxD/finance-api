@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { prismaClient } from '../infra/database/prismaClient'
 
-class GetAllUserController {
+class GetAllCardsController {
     async handle(request: Request, response: Response) {
         try {
-            const users = await prismaClient.user.findMany()
+            const cards = await prismaClient.cards.findMany()
 
             return response.json({
-                users
+                cards
             })
         } catch (error) {
             console.error(error)
@@ -18,4 +18,4 @@ class GetAllUserController {
     }
 }
 
-export default new GetAllUserController()
+export default new GetAllCardsController()
