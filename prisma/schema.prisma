@@ -7,15 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cards {
+model SpendDebitCard {
   id         String   @id @unique @default(uuid())
-  name       String
-  final_code Float    @unique
+  value      Float
+  created_at DateTime @default(now())
+  cardId     String
+  Card       Card     @relation(fields: [cardId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("spend_debit_card")
+}
+
+model SpendCreditCard {
+  id         String   @id @unique @default(uuid())
+  value      Float
   created_at DateTime @default(now())
   userId     String
   User       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cardId     String
+  Card       Card     @relation(fields: [cardId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@map("cards")
+  @@map("spend_credit_card")
+}
+
+model Card {
+  id               String            @id @unique @default(uuid())
+  name             String
+  final_code       Float             @unique
+  spendCreditCards SpendCreditCard[]
+  spendDebitCards  SpendDebitCard[]
+  created_at       DateTime          @default(now())
+  userId           String
+  User             User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("card")
 }
 
 model Profile {
@@ -28,11 +52,13 @@ model Profile {
 }
 
 model User {
-  id         String   @id @unique @default(uuid())
-  name       String   @db.VarChar(255)
-  email      String   @unique @db.VarChar(255)
-  password   String
-  cards      Cards[]
+  id              String            @id @unique @default(uuid())
+  name            String            @db.VarChar(255)
+  email           String            @unique @db.VarChar(255)
+  password        String
+  spendCreditCard SpendCreditCard[]
+  card            Card[]
+
   profile    Profile?
   created_at DateTime @default(now())
 

@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 
-import { prismaClient } from '../infra/database/prismaClient'
+import { prismaClient } from '../../infra/database/prismaClient'
 
-import generatedToken from '../utils/generatedToken'
+import generatedToken from '../../utils/generatedToken'
 
 interface User {
     id: string

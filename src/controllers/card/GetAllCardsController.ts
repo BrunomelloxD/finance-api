@@ -1,10 +1,16 @@
 import { Request, Response } from 'express'
-import { prismaClient } from '../infra/database/prismaClient'
+import { prismaClient } from '../../infra/database/prismaClient'
 
-class GetAllCardsController {
+class GetUserCardsController {
     async handle(request: Request, response: Response) {
+        const { user_id } = request.params
+
         try {
-            const cards = await prismaClient.cards.findMany()
+            const cards = await prismaClient.card.findMany({
+                where: {
+                    userId: user_id
+                }
+            })
 
             return response.json({
                 cards
@@ -18,4 +24,4 @@ class GetAllCardsController {
     }
 }
 
-export default new GetAllCardsController()
+export default new GetUserCardsController()

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
-import { prismaClient } from '../infra/database/prismaClient'
+import { prismaClient } from '../../infra/database/prismaClient'
 
 class CreateUserController {
     async handle(request: Request, response: Response) {

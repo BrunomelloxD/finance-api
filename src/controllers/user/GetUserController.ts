@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { prismaClient } from '../infra/database/prismaClient'
+import { prismaClient } from '../../infra/database/prismaClient'
 
 class GetUserController {
     async handle(request: Request, response: Response) {
@@ -10,7 +10,8 @@ class GetUserController {
                     id: id
                 },
                 include: {
-                    cards: true
+                    card: true,
+                    spendCreditCard: true
                 }
             })
 
