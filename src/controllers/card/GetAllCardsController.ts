@@ -4,7 +4,6 @@ import { prismaClient } from '../../infra/database/prismaClient'
 class GetUserCardsController {
     async handle(request: Request, response: Response) {
         const { user_id } = request.params
-
         try {
             const cards = await prismaClient.card.findMany({
                 where: {

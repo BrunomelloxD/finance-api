@@ -8,23 +8,27 @@ datasource db {
 }
 
 model SpendDebitCard {
-  id         String   @id @unique @default(uuid())
-  value      Float
-  created_at DateTime @default(now())
-  cardId     String
-  Card       Card     @relation(fields: [cardId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          String   @id @unique @default(uuid())
+  value       Float
+  description String
+  created_at  DateTime @default(now())
+  userId      String
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cardId      String
+  Card        Card     @relation(fields: [cardId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("spend_debit_card")
 }
 
 model SpendCreditCard {
-  id         String   @id @unique @default(uuid())
-  value      Float
-  created_at DateTime @default(now())
-  userId     String
-  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  cardId     String
-  Card       Card     @relation(fields: [cardId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          String   @id @unique @default(uuid())
+  value       Float
+  description String
+  created_at  DateTime @default(now())
+  userId      String
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cardId      String
+  Card        Card     @relation(fields: [cardId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("spend_credit_card")
 }
@@ -42,25 +46,16 @@ model Card {
   @@map("card")
 }
 
-model Profile {
-  id     String  @id @unique @default(uuid())
-  bio    String?
-  userId String  @unique
-  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@map("profile")
-}
-
 model User {
   id              String            @id @unique @default(uuid())
   name            String            @db.VarChar(255)
   email           String            @unique @db.VarChar(255)
   password        String
+  description     String?
+  spendDebitCard  SpendDebitCard[]
   spendCreditCard SpendCreditCard[]
   card            Card[]
-
-  profile    Profile?
-  created_at DateTime @default(now())
+  created_at      DateTime          @default(now())
 
   @@map("users")
 }
