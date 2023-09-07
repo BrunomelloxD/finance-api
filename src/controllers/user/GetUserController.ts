@@ -11,7 +11,8 @@ class GetUserController {
                 },
                 include: {
                     card: true,
-                    spendCreditCard: true
+                    spendCreditCard: true,
+                    spendDebitCard: true
                 }
             })
 

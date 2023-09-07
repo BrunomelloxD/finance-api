@@ -18,7 +18,7 @@ import authMiddleware from './middlewares/authMiddleware'
 const routes = Router()
 
 routes.get('/user', GetAllUserController.handle)
-routes.get('/user/:id', GetUserController.handle)
+routes.get('/user/:id', authMiddleware, GetUserController.handle)
 routes.get('/cards/:id', authMiddleware, GetAllCardsController.handle)
 routes.get('/card/:id', authMiddleware, GetCardController.handle)
 routes.post('/login', AuthController.authenticate)

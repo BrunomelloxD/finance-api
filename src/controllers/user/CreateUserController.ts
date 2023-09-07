@@ -22,7 +22,7 @@ class CreateUserController {
                 })
             }
 
-            const user = await prismaClient.user.create({
+            await prismaClient.user.create({
                 data: {
                     name,
                     email,
@@ -30,9 +30,7 @@ class CreateUserController {
                 }
             })
 
-            return response.status(201).json({
-                user
-            })
+            return response.status(201)
         } catch (error) {
             console.error(error)
             return response.status(500).json({
