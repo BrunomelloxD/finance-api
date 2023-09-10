@@ -3,17 +3,15 @@ import { prismaClient } from '../../infra/database/prismaClient'
 
 class GetUserCardsController {
     async handle(request: Request, response: Response) {
-        const { user_id } = request.params
+        const { id } = request.params
         try {
             const cards = await prismaClient.card.findMany({
                 where: {
-                    userId: user_id
+                    userId: id
                 }
             })
 
-            return response.json({
-                cards
-            })
+            return response.status(200).json(cards)
         } catch (error) {
             console.error(error)
             return response.status(500).json({

@@ -7,12 +7,11 @@ interface TokenPayload {
     exp: number
 }
 
-export default function authMiddleware(
+export const authMiddleware = (
     request: Request,
     response: Response,
     next: NextFunction
-) {
-    // Recebendo o Token
+) => {
     const { authorization } = request.headers
 
     if (!authorization || !authorization.startsWith('Bearer')) {

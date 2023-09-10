@@ -9,11 +9,12 @@ import GetCardController from './controllers/card/GetCardController'
 // CONTROLLERS - USER
 import AuthController from './controllers/user/AuthController'
 import CreateUserController from './controllers/user/CreateUserController'
+import DeleteUserController from './controllers/user/DeleteUserController'
 import GetAllUserController from './controllers/user/GetAllUserController'
 import GetUserController from './controllers/user/GetUserController'
 
 // MIDDLEWARES
-import authMiddleware from './middlewares/authMiddleware'
+import { authMiddleware } from './middlewares/authMiddleware'
 
 const routes = Router()
 
@@ -25,6 +26,7 @@ routes.post('/login', AuthController.authenticate)
 routes.post('/card', authMiddleware, CreateCardController.handle)
 routes.post('/user', CreateUserController.handle)
 routes.post('/user', CreateUserController.handle)
+routes.delete('/user/:id', authMiddleware, DeleteUserController.handle)
 routes.post(
     '/card/spendCreditCard',
     authMiddleware,
