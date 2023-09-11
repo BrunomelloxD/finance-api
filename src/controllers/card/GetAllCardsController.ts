@@ -1,17 +1,37 @@
 import { Request, Response } from 'express'
+
 import { prismaClient } from '../../infra/database/prismaClient'
 
-class GetUserCardsController {
+class GetAllCardsController {
     async handle(request: Request, response: Response) {
-        const { id } = request.params
+        const { id, name } = request.body
         try {
-            const cards = await prismaClient.card.findMany({
-                where: {
-                    userId: id
-                }
-            })
+            if (!id) {
+                return response.status(404).json({
+                    message: 'User not found'
+                })
+            }
 
-            return response.status(200).json(cards)
+            if (!name) {
+                const cards = await prismaClient.card.findMany({
+                    where: {
+                        userId: id
+                    }
+                })
+
+                return response.status(200).json(cards)
+            } else if (name) {
+                const cards = await prismaClient.card.findMany({
+                    where: {
+                        userId: id,
+                        name: {
+                            contains: name,
+                            mode: 'insensitive'
+                        }
+                    }
+                })
+                return response.status(200).json(cards)
+            }
         } catch (error) {
             console.error(error)
             return response.status(500).json({
@@ -21,4 +41,4 @@ class GetUserCardsController {
     }
 }
 
-export default new GetUserCardsController()
+export default new GetAllCardsController()

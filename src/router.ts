@@ -20,11 +20,10 @@ const routes = Router()
 
 routes.get('/user', GetAllUserController.handle)
 routes.get('/user/:id', authMiddleware, GetUserController.handle)
-routes.get('/cards/:id', authMiddleware, GetAllCardsController.handle)
-routes.get('/card/:id', authMiddleware, GetCardController.handle)
+routes.get('/cards', authMiddleware, GetAllCardsController.handle)
+routes.get('/card', authMiddleware, GetCardController.handle)
 routes.post('/login', AuthController.authenticate)
 routes.post('/card', authMiddleware, CreateCardController.handle)
-routes.post('/user', CreateUserController.handle)
 routes.post('/user', CreateUserController.handle)
 routes.delete('/user/:id', authMiddleware, DeleteUserController.handle)
 routes.post(
