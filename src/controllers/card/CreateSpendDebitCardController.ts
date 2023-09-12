@@ -8,7 +8,7 @@ class CreateSpendDebitCardController {
         try {
             const spendDebit = await prismaClient.spendDebitCard.create({
                 data: {
-                    value,
+                    value: value,
                     description: description,
                     cardId: card_id,
                     userId: user_id

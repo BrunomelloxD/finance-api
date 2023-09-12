@@ -10,8 +10,10 @@ import GetCardController from './controllers/card/GetCardController'
 import AuthController from './controllers/user/AuthController'
 import CreateUserController from './controllers/user/CreateUserController'
 import DeleteUserController from './controllers/user/DeleteUserController'
+import ForgotPasswordController from './controllers/user/ForgotPasswordController'
 import GetAllUserController from './controllers/user/GetAllUserController'
 import GetUserController from './controllers/user/GetUserController'
+import ResetPasswordController from './controllers/user/ResetPasswordController'
 
 // MIDDLEWARES
 import { authMiddleware } from './middlewares/authMiddleware'
@@ -27,14 +29,16 @@ routes.post('/card', authMiddleware, CreateCardController.handle)
 routes.post('/user', CreateUserController.handle)
 routes.delete('/user/:id', authMiddleware, DeleteUserController.handle)
 routes.post(
-    '/card/spendCreditCard',
+    '/card/spend_credit_card',
     authMiddleware,
     CreateSpendCreditCardController.handle
 )
 routes.post(
-    '/card/spendDebitCard',
+    '/card/spend_debit_card',
     authMiddleware,
     CreateSpendDebitCardController.handle
 )
+routes.post('/user/forgot_password', ForgotPasswordController.handle)
+routes.post('/user/reset_password', ResetPasswordController.handle)
 
 export { routes }

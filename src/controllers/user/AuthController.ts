@@ -38,11 +38,11 @@ class AuthController {
 
             const { id, name, email: userEmail } = user
 
-            const token = await generatedToken({ id })
+            const access_token = await generatedToken({ id })
 
             return response.json({
                 user: { id, name, email: userEmail },
-                token
+                access_token
             })
         } catch (error) {
             console.error('Error during authentication:', error)

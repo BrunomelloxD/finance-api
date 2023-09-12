@@ -4,6 +4,7 @@ import { prismaClient } from '../../infra/database/prismaClient'
 class GetUserController {
     async handle(request: Request, response: Response) {
         const { id } = request.params
+
         try {
             const user = await prismaClient.user.findUniqueOrThrow({
                 where: {

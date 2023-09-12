@@ -5,6 +5,7 @@ import { prismaClient } from '../../infra/database/prismaClient'
 class GetAllCardsController {
     async handle(request: Request, response: Response) {
         const { id, name } = request.body
+
         try {
             if (!id) {
                 return response.status(404).json({

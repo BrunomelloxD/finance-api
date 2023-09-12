@@ -6,6 +6,7 @@ class GetCardExpensesController {
         const { user_id, card_id, start_data, end_data } = request.body
         const INITIAL_HOUR = 'T00:00:00.000Z'
         const FINAL_HOUR = 'T23:59:59.999Z'
+
         try {
             const card = await prismaClient.card.findUnique({
                 where: {

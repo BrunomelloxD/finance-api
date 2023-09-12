@@ -10,7 +10,6 @@ class CreateUserController {
     async handle(request: Request, response: Response) {
         const { name, email, password } = request.body
         const saltRounds = 14
-
         const hashedPassword = await bcrypt.hash(password, saltRounds)
 
         try {
@@ -38,7 +37,9 @@ class CreateUserController {
                 }
             })
 
-            return response.status(201).json(user)
+            return response.status(201).json({
+                user
+            })
         } catch (error) {
             console.error(error)
             return response.status(500).json({
