@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { Request, Response } from 'express'
 
-import sendEmail from '../../config/nodemailer'
+import sendEmail from '../../utils/sendEmail'
 
 import { prismaClient } from '../../infra/database/prismaClient'
 
@@ -34,8 +34,6 @@ class RestorePasswordController {
             await sendEmail(email, resetToken)
 
             return response.status(200).json({ message: 'Email sent' })
-
-            // console.log(resetToken, now)
         } catch (error) {
             console.error(error)
             return response.status(500).json({ 'Internal server error': error })
