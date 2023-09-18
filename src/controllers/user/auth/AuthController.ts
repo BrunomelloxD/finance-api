@@ -1,27 +1,23 @@
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 
-import { prismaClient } from '../../infra/database/prismaClient'
+import { prismaClient } from '../../../infra/database/prismaClient'
 
-import generatedToken from '../../utils/generatedToken'
+import generateLoginToken from '../../../utils/generateLoginToken'
 
-interface User {
-    id: string
-    name: string
-    email: string
-    password: string
-}
+import { UserGenericTypes } from '../../../types/user'
 
 class AuthController {
     async authenticate(request: Request, response: Response) {
         try {
             const { email, password } = request.body
 
-            const user: User | null = await prismaClient.user.findFirst({
-                where: {
-                    email
-                }
-            })
+            const user: UserGenericTypes | null =
+                await prismaClient.user.findFirst({
+                    where: {
+                        email
+                    }
+                })
 
             if (!user) {
                 return response.status(404).json({ error: 'User not found' })
@@ -38,7 +34,7 @@ class AuthController {
 
             const { id, name, email: userEmail } = user
 
-            const access_token = await generatedToken({ id })
+            const access_token = await generateLoginToken({ id })
 
             return response.json({
                 user: { id, name, email: userEmail },

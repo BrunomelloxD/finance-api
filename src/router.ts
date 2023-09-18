@@ -7,7 +7,7 @@ import CreateSpendDebitCardController from './controllers/card/CreateSpendDebitC
 import GetAllCardsController from './controllers/card/GetAllCardsController'
 import GetCardController from './controllers/card/GetCardController'
 // CONTROLLERS - USER
-import AuthController from './controllers/user/AuthController'
+import AuthController from './controllers/user/auth/AuthController'
 import CreateUserController from './controllers/user/CreateUserController'
 import DeleteUserController from './controllers/user/DeleteUserController'
 import ForgotPasswordController from './controllers/user/ForgotPasswordController'

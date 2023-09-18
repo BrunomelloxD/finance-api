@@ -1,27 +1,24 @@
 import { Request, Response } from 'express'
-import { prismaClient } from '../../infra/database/prismaClient'
+
+import GetUserModel from '../../models/user/GetUserModel'
 
 class GetUserController {
     async handle(request: Request, response: Response) {
         const { id } = request.params
 
         try {
-            const user = await prismaClient.user.findUniqueOrThrow({
-                where: {
-                    id: id
-                },
-                include: {
-                    card: {
-                        include: {
-                            spendCreditCards: true,
-                            spendDebitCards: true
-                        }
-                    }
-                }
-            })
+            const repository = await GetUserModel.handle(request, id)
 
-            return response.json({
-                user
+            const { success, code, message, user } = repository
+
+            if (success) {
+                return response.status(code).json({
+                    user: user
+                })
+            }
+
+            return response.status(code).json({
+                message: message
             })
         } catch (error) {
             console.error(error)

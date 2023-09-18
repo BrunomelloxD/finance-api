@@ -1,49 +1,31 @@
-import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 
-import { prismaClient } from '../../infra/database/prismaClient'
-
-import isValidEmail from '../../utils/isValidEmail'
-import userExists from '../../utils/userExists'
+import CreateUserModel from '../../models/user/CreateUserModel'
 
 class CreateUserController {
     async handle(request: Request, response: Response) {
         const { name, email, password } = request.body
-        const saltRounds = 14
-        const hashedPassword = await bcrypt.hash(password, saltRounds)
 
         try {
-            const validatedEmail = await isValidEmail(email)
+            const repository = await CreateUserModel.handle(
+                response,
+                name,
+                email,
+                password
+            )
 
-            if (!validatedEmail) {
-                return response.status(400).json({
-                    message: 'Invalid email'
-                })
+            const { success, code, message } = repository
+
+            if (success) {
+                return response.status(code).send()
             }
 
-            const validatedUser = await userExists(email)
-
-            if (validatedUser) {
-                return response.status(400).json({
-                    message: 'User already exists'
-                })
-            }
-
-            const user = await prismaClient.user.create({
-                data: {
-                    name,
-                    email,
-                    password: hashedPassword
-                }
-            })
-
-            return response.status(201).json({
-                user
+            return response.status(code).json({
+                message: message
             })
         } catch (error) {
-            console.error(error)
             return response.status(500).json({
-                message: 'Internal server error'
+                message: `Internal server error: ${error}`
             })
         }
     }

@@ -1,6 +1,6 @@
 import * as EmailValidator from 'email-validator'
 
-const isValidEmail = (email: string) => {
+const isValidEmail = async (email: string) => {
     try {
         const isValidEmail = EmailValidator.validate(email)
         if (!isValidEmail) {

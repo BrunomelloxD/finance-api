@@ -1,4 +1,4 @@
-import { transporter } from '../config/nodemailer'
+import { transporter } from '../config/Nodemailer'
 
 const sendEmail = async (email: string, token: string) => {
     const EMAIL = process.env.EMAIL

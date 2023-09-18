@@ -1,39 +1,23 @@
-import crypto from 'crypto'
 import { Request, Response } from 'express'
 
-import sendEmail from '../../utils/sendEmail'
-
-import { prismaClient } from '../../infra/database/prismaClient'
+import ForgotPasswordModel from '../../models/user/ForgotPasswordModel'
 
 class RestorePasswordController {
     async handle(request: Request, response: Response) {
         const { email } = request.body
 
         try {
-            const user = await prismaClient.user.findUnique({
-                where: { email }
-            })
+            const repository = await ForgotPasswordModel.handle(request, email)
 
-            if (!user) {
-                return response.status(404).json({ message: 'User not found' })
+            const { success, code, message } = repository
+
+            if (success) {
+                return response.status(code).send()
             }
 
-            const id = user.id
-            const resetToken = crypto.randomBytes(20).toString('hex')
-            const now = new Date()
-            now.setHours(now.getHours() + 1)
-
-            await prismaClient.user.update({
-                where: { id: id },
-                data: {
-                    passwordResetToken: resetToken,
-                    passwordResetExpires: now
-                }
+            return response.status(code).json({
+                message: message
             })
-
-            await sendEmail(email, resetToken)
-
-            return response.status(200).json({ message: 'Email sent' })
         } catch (error) {
             console.error(error)
             return response.status(500).json({ 'Internal server error': error })

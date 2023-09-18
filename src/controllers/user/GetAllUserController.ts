@@ -1,16 +1,14 @@
 import { Request, Response } from 'express'
-import { prismaClient } from '../../infra/database/prismaClient'
+
+import GetAllUserModel from '../../models/user/GetAllUserModel'
 
 class GetAllUserController {
     async handle(request: Request, response: Response) {
         try {
-            const users = await prismaClient.user.findMany()
+            const users = await GetAllUserModel.handle(response)
 
-            return response.json({
-                users
-            })
+            return response.status(200).json(users)
         } catch (error) {
-            console.error(error)
             return response.status(500).json({
                 message: 'Internal server error'
             })
