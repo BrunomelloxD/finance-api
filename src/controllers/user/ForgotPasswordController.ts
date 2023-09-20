@@ -8,7 +8,6 @@ class RestorePasswordController {
 
         try {
             const repository = await ForgotPasswordModel.handle(request, email)
-
             const { success, code, message } = repository
 
             if (success) {

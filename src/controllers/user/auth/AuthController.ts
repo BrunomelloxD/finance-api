@@ -1,44 +1,23 @@
-import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 
-import { prismaClient } from '../../../infra/database/prismaClient'
-
-import generateLoginToken from '../../../utils/generateLoginToken'
-
-import { UserGenericTypes } from '../../../types/user'
+import AuthModel from '../../../models/auth/authModel'
 
 class AuthController {
     async authenticate(request: Request, response: Response) {
         try {
             const { email, password } = request.body
+            const repository = await AuthModel.handle(request, email, password)
+            const { success, code, message, access_token, user } = repository
 
-            const user: UserGenericTypes | null =
-                await prismaClient.user.findFirst({
-                    where: {
-                        email
-                    }
+            if (success) {
+                return response.status(code).json({
+                    user,
+                    access_token
                 })
-
-            if (!user) {
-                return response.status(404).json({ error: 'User not found' })
             }
 
-            const isValidPassword = await bcrypt.compare(
-                password,
-                user.password
-            )
-
-            if (!isValidPassword) {
-                return response.status(401).json({ error: 'Invalid password' })
-            }
-
-            const { id, name, email: userEmail } = user
-
-            const access_token = await generateLoginToken({ id })
-
-            return response.json({
-                user: { id, name, email: userEmail },
-                access_token
+            return response.status(code).json({
+                message: message
             })
         } catch (error) {
             console.error('Error during authentication:', error)

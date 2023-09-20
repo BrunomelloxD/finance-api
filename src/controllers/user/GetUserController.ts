@@ -8,7 +8,6 @@ class GetUserController {
 
         try {
             const repository = await GetUserModel.handle(request, id)
-
             const { success, code, message, user } = repository
 
             if (success) {

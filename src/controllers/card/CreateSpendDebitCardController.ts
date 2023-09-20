@@ -1,20 +1,29 @@
 import { Request, Response } from 'express'
-import { prismaClient } from '../../infra/database/prismaClient'
+
+import CreateSpendDebitCardModel from '../../models/card/CreateSpendDebitCardModel'
 
 class CreateSpendDebitCardController {
     async handle(request: Request, response: Response) {
         const { value, card_id, description, user_id } = request.body
 
         try {
-            const spendDebit = await prismaClient.spendDebitCard.create({
-                data: {
-                    value: value,
-                    description: description,
-                    cardId: card_id,
-                    userId: user_id
-                }
+            const repository = await CreateSpendDebitCardModel.handle(
+                request,
+                value,
+                card_id,
+                description,
+                user_id
+            )
+
+            const { success, code, message } = repository
+
+            if (success) {
+                return response.status(code).send()
+            }
+
+            return response.status(code).json({
+                message: message
             })
-            return response.status(201).json(spendDebit)
         } catch (error) {
             console.error(error)
             return response.status(500).json({ error: 'Internal server error' })

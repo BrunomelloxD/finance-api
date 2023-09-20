@@ -25,6 +25,6 @@ export interface Card {
     created_at: Date
     updatedAt: Date
     userId: string
-    spendCreditCards: SpendCreditCard[]
-    spendDebitCards: SpendDebitCard[]
+    spendCreditCards?: SpendCreditCard[]
+    spendDebitCards?: SpendDebitCard[]
 }

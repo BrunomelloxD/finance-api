@@ -1,38 +1,22 @@
 import { Request, Response } from 'express'
 
-import { prismaClient } from '../../infra/database/prismaClient'
+import GetAllCardModel from '../../models/card/GetAllCardModel'
 
 class GetAllCardsController {
     async handle(request: Request, response: Response) {
         const { id, name } = request.body
 
         try {
-            if (!id) {
-                return response.status(404).json({
-                    message: 'User not found'
-                })
+            const repository = await GetAllCardModel.handle(request, id, name)
+            const { success, code, message, cards } = repository
+
+            if (success) {
+                return response.status(code).json(cards)
             }
 
-            if (!name) {
-                const cards = await prismaClient.card.findMany({
-                    where: {
-                        userId: id
-                    }
-                })
-
-                return response.status(200).json(cards)
-            } else if (name) {
-                const cards = await prismaClient.card.findMany({
-                    where: {
-                        userId: id,
-                        name: {
-                            contains: name,
-                            mode: 'insensitive'
-                        }
-                    }
-                })
-                return response.status(200).json(cards)
-            }
+            return response.status(code).json({
+                message: message
+            })
         } catch (error) {
             console.error(error)
             return response.status(500).json({

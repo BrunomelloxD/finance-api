@@ -7,7 +7,6 @@ class DeleteUserController {
         try {
             const { id } = request.params
             const repository = await DeleteUserModel.handle(request, id)
-
             const { success, code, message } = repository
 
             if (success) {

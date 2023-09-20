@@ -1,6 +1,6 @@
 import { Card } from './card'
 
-export interface UserGenericTypes {
+export interface UserBasicTypes {
     id: string
     name: string
     email: string
@@ -8,19 +8,6 @@ export interface UserGenericTypes {
 }
 
 export interface UserTypes {
-    success: boolean
-    code: number
-    message?: string
-}
-
-export interface GetUserTypes {
-    success: boolean
-    code: number
-    message?: string
-    user: UserGenericTypes
-}
-
-export interface User {
     id: string
     name: string
     email: string

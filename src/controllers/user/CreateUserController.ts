@@ -13,7 +13,6 @@ class CreateUserController {
                 email,
                 password
             )
-
             const { success, code, message } = repository
 
             if (success) {
