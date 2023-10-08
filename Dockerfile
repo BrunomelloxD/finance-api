@@ -1,17 +1,20 @@
-FROM node:18-alpine as builder
+# Dockerfile
+FROM node:18-alpine
 
 RUN mkdir -p /home/bruno/app
 WORKDIR /home/bruno/app
 
-RUN npm i -g prisma
+COPY ./prisma ./prisma
 
+COPY package*.json ./
+COPY .env ./
+COPY tsconfig.json ./
+
+RUN npm install
 RUN npx prisma generate
 
-COPY package*.json /home/bruno/app
-RUN npm i
+COPY . ./
 
-COPY . .
-
-EXPOSE 3000:3000
+EXPOSE 3000
 
 CMD ["npm", "run", "dev"]

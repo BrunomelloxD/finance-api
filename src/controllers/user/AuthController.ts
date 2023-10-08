@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import AuthModel from '../../../models/auth/authModel'
+import AuthModel from '../../models/user/authModel'
 
 class AuthController {
     async authenticate(request: Request, response: Response) {
