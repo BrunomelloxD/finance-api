@@ -6,10 +6,10 @@ import { rateLimit } from 'express-rate-limit'
 import { routes } from './router'
 
 const PORT = 3000
-const TIME_LIMITER = 60 * 60 * 1000 // 15 minutes in milliseconds
+const TIME_LIMITER = 60 * 60 * 1000 // One hour in milliseconds
 const LIMIT = 100 // 100 requests per minute
 const MESSAGE =
-    'Too many accounts created from this IP, please try again after an hour'
+    'Too many accounts created from this IP, please try again after an hour' // Message to show to the user
 
 const app = express()
 
